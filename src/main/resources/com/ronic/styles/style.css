@@ -1,0 +1,31 @@
+
+
+
+/* Labels */
+.label {
+    
+    -fx-font-weight: bold;  /* Negrita para resaltar */
+    -fx-font-size: 16px;  /* Tamaño grande, pero no excesivo */
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 3;
+   
+}
+
+
+
+/* Botones */
+.button {
+    -fx-background-color: #3b3f58;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-border-color: transparent;
+}
+
+.button:hover {
+    -fx-background-color: #556090;
+}
+
+.button:pressed {
+    -fx-background-color: #2d2f45;
+}

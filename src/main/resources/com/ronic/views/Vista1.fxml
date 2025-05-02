@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="rootVista1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="Vista1" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.Vista1Controller">
+   <children>
+      <Label fx:id="newJg" layoutX="445.0" layoutY="38.0" text="Nuevo Jugador" />
+      <TextField fx:id="txtNombre" layoutX="428.0" layoutY="78.0" promptText="Nombre" />
+      <TextField fx:id="txtPuntosVida" layoutX="428.0" layoutY="125.0" promptText="Puntos de vida" />
+      <TextField fx:id="txtDefensa" layoutX="428.0" layoutY="165.0" promptText="Defensa" />
+      <Label layoutX="300.0" layoutY="78.0" text="Nombre" />
+      <Label layoutX="300.0" layoutY="125.0" text="Puntos de vida" />
+      <Label layoutX="299.0" layoutY="165.0" text="Defensa" />
+      <Label layoutX="300.0" layoutY="212.0" text="Fuerza" />
+      <TextField fx:id="txtFuerza" layoutX="428.0" layoutY="212.0" promptText="Fuerza" />
+      <Button fx:id="btnIniciar" layoutX="476.0" layoutY="265.0" mnemonicParsing="false" text="INICIAR" />
+   </children>
+</AnchorPane>
