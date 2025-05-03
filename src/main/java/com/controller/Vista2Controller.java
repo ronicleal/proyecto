@@ -4,6 +4,7 @@ import com.interfaces.Observer;
 import com.model.Celda;
 import com.model.LectorEscenario;
 import com.model.Protagonista;
+import com.model.Proveedor;
 import com.model.TipoCelda;
 
 import javafx.fxml.FXML;
@@ -25,6 +26,11 @@ public class Vista2Controller implements Observer {
     // Recibir el objeto Protagonista
     private Protagonista protagonista; // Personaje principal del juego
 
+    private Image protagonistaArriba;
+    private Image protagonistaAbajo;
+    private Image protagonistaIzquierda;
+    private Image protagonistaDerecha;
+
     @FXML
     private VBox root; // Contenedor principal de la vista
 
@@ -37,39 +43,52 @@ public class Vista2Controller implements Observer {
     /**
      * Este método se llama desde la vista anterior para recibir el protagonista
      * y luego llama a reproduce() para mostrarlo en el mapa.
+     * 
      * @param protagonista
      */
     public void setProtagonista(Protagonista protagonista) {
-        this.protagonista = protagonista;
+        Proveedor.getInstance().setProtagonista(protagonista);
         reproduce();
     }
-
 
     @FXML
     public void initialize() {
 
-        // Cargar la imagen del protagonista
+        // carga las imagenes para el protagonista
 
-        Image protagonistaImage = new Image(getClass().getResourceAsStream("/imagen/protagonista.gif")); // Ruta de la
-                                                                                                         // imagen
-        if (protagonistaImage.isError()) {
+        protagonistaArriba = new Image(getClass().getResourceAsStream("/imagen/protagonista_arriba.png"));
+        protagonistaAbajo = new Image(getClass().getResourceAsStream("/imagen/protagonista_abajo.png"));
+        protagonistaIzquierda = new Image(getClass().getResourceAsStream("/imagen/protagonista_izquierda.png"));
+        protagonistaDerecha = new Image(getClass().getResourceAsStream("/imagen/protagonista_derecha.png"));
+
+        // MENSAJE SI NO SE CARGA LA IMAGEN DEL PROTAGONISTA
+
+        if (protagonistaArriba.isError()) {
+            System.err.println("Error al cargar la imagen del protagonista.");
+        } else if (protagonistaAbajo.isError()) {
+            System.err.println("Error al cargar la imagen del protagonista.");
+        } else if (protagonistaDerecha.isError()) {
+            System.err.println("Error al cargar la imagen del protagonista.");
+        } else if (protagonistaIzquierda.isError()) {
             System.err.println("Error al cargar la imagen del protagonista.");
         }
 
-        // Cuando se carga la vista, se carga la imagen del protagonista y se ajusta a
+      // Cuando se carga la vista, se carga la imagen del protagonista y se ajusta a
         // un tamaño adecuado.
-
-        protagonistaImageView = new ImageView(protagonistaImage);
+        // Por defecto, muestra mirando abajo (o la que prefieras)
+        protagonistaImageView = new ImageView(protagonistaAbajo);
         protagonistaImageView.setFitWidth(TAMANO_CELDA);
         protagonistaImageView.setFitHeight(TAMANO_CELDA);
 
     }
 
     private void manejarMovimiento(KeyEvent event) {
+        
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
 
-        //Detecta la tecla pulsada y calcula la nueva posición del protagonista.
-        //Llama a esPosicionValida para ver si puede moverse ahí.
-        //Si es válido, actualiza la posición y redibuja el mapa.
+        // Detecta la tecla pulsada y calcula la nueva posición del protagonista.
+        // Llama a esPosicionValida para ver si puede moverse ahí.
+        // Si es válido, actualiza la posición y redibuja el mapa.
 
         int nuevaFila = protagonista.getFila();
         int nuevaColumna = protagonista.getColumna();
@@ -77,17 +96,20 @@ public class Vista2Controller implements Observer {
         // Cambia la fila o columna según la tecla pulsada
         if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.W) {
             nuevaFila--; // Mover hacia arriba
+            protagonistaImageView.setImage(protagonistaArriba); //En esta linea asocio la imagen que quiero a la tecla
 
         } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S) {
             nuevaFila++; // Mover hacia abajo
+            protagonistaImageView.setImage(protagonistaAbajo); //En esta linea asocio la imagen que quiero a la tecla
 
         } else if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.A) {
             nuevaColumna--; // Mover hacia la izquierda
+            protagonistaImageView.setImage(protagonistaIzquierda); //En esta linea asocio la imagen que quiero a la tecla
 
         } else if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.D) {
             nuevaColumna++; // Mover hacia la derecha
+            protagonistaImageView.setImage(protagonistaDerecha); //En esta linea asocio la imagen que quiero a la tecla
         }
-
 
         // Comprueba si la nueva posición es válida (no es pared ni está fuera del mapa)
         if (esPosicionValida(nuevaFila, nuevaColumna)) {
@@ -96,14 +118,10 @@ public class Vista2Controller implements Observer {
         }
     }
 
-
-
-    
-
     private boolean esPosicionValida(int fila, int columna) {
         // Evita que el protagonista salga del mapa o entre en una pared (#).
-        // Muestra en consola el tipo de celda a la que se quiere mover (útil para depurar).
-       
+        // Muestra en consola el tipo de celda a la que se quiere mover (útil para
+        // depurar).
 
         try {
             LectorEscenario lector = new LectorEscenario("/dataUrl/mapas.txt");
@@ -123,23 +141,22 @@ public class Vista2Controller implements Observer {
         }
     }
 
-
-
-
     private void reproduce() {
-        
-        //Reconstruye el mapa cada vez que el protagonista se mueve.
-        //Dibuja la imagen del protagonista en su posición actual.
-        //El resto de celdas se dibujan como suelo (.) o pared (#).
-        //Después de redibujar, el GridPane vuelve a escuchar el teclado y se le da el foco para que puedas seguir moviendo al protagonista.
 
+        // Reconstruye el mapa cada vez que el protagonista se mueve.
+        // Dibuja la imagen del protagonista en su posición actual.
+        // El resto de celdas se dibujan como suelo (.) o pared (#).
+        // Después de redibujar, el GridPane vuelve a escuchar el teclado y se le da el
+        // foco para que puedas seguir moviendo al protagonista.
+
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         if (protagonista != null) {
             System.out.println("Nombre del protagonista " + protagonista.getNombre());
             System.out.println("Puntos de vida: " + protagonista.getPuntosVida());
         }
 
         try {
-            
+
             LectorEscenario lectorEscenario = new LectorEscenario("/dataUrl/mapas.txt");
 
             mainGridPane = new GridPane();
@@ -148,7 +165,6 @@ public class Vista2Controller implements Observer {
             int filas = lectorEscenario.getAlto();
             int columnas = lectorEscenario.getAncho();
             double porcentaje = 100.0 / columnas;
-
 
             // Configura las columnas del GridPane
             for (int i = 0; i < columnas; i++) {

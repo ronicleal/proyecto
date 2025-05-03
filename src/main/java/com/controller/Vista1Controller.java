@@ -2,6 +2,7 @@ package com.controller;
 
 import com.model.LectorEscenario;
 import com.model.Protagonista;
+import com.model.Proveedor;
 import com.model.TipoCelda;
 import com.ronic.SceneId;
 import com.ronic.SceneManager;
@@ -77,6 +78,9 @@ public class Vista1Controller {
                 //Crea un objeto Protagonista con los datos del usuario y la posición inicial encontrada en el mapa.
                 
                 Protagonista protagonista = new Protagonista (nombre, defensa, fuerza, danio, puntosVida, fila, columna);
+
+                // Guardar el protagonista en el Proveedor para acceso global
+                Proveedor.getInstance().setProtagonista(protagonista);
 
                 //Pasar el protagonista a la siguiente vista
                 SceneManager.getInstance().loadScene(SceneId.VISTA2, protagonista);
