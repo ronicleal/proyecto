@@ -1,11 +1,14 @@
 package com.model;
 
-public class Personaje {
+abstract class Personaje {
+    
     protected String nombre;
     protected int puntosVida;
     protected int defensa;
     protected int fuerza;
     protected int danio;
+    protected int fila ;
+    protected int columna;
 
   
 
@@ -23,6 +26,22 @@ public class Personaje {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getFila() {
+        return this.fila;
+    }
+
+    public void setFila(int fila) {
+        this.fila = fila;
+    }
+
+    public int getColumna() {
+        return this.columna;
+    }
+
+    public void setColumna(int columna) {
+        this.columna = columna;
     }
 
     public int getPuntosVida() {
@@ -77,6 +96,12 @@ public class Personaje {
         }
     }
 
+
+    public void setPosicion(int fila, int columna) {
+        this.fila = fila;
+        this.columna = columna;
+    }
+
     @Override
     public String toString() {
         return "Personaje [nombre=" + nombre + ", puntosVida=" + puntosVida + ", defensa=" + defensa + ", fuerza="
@@ -87,5 +112,4 @@ public class Personaje {
 
 
         
-
-}
+    }
