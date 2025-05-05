@@ -1,5 +1,7 @@
 package com.ronic;
 
+import com.controller.VistaBienvenida;
+
 public enum SceneId {
-    VISTA1, VISTA2
+    VISTABIENVENIDA, VISTA1, VISTA2
 }

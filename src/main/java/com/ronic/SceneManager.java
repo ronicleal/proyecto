@@ -45,6 +45,9 @@ public class SceneManager {
         }
     }
 
+
+
+
     public void loadScene(SceneId sceneID, Protagonista protagonista) {
         this.protagonista = protagonista;
         if (scenes.containsKey(sceneID)){
@@ -61,6 +64,19 @@ public class SceneManager {
             }
         }
     }
+
+
+    
+
+    //Este metodo se añade para cargar la primera vista de bienvenida
+    public void loadScene(SceneId sceneID) {
+        if (scenes.containsKey(sceneID)) {
+            stage.setScene(scenes.get(sceneID));
+            stage.show();
+        }
+    }
+
+
 
     /**
      * Esto metod sirve para verificar si una escena ya está cargada antes de intentar mostrarla o manipularla.

@@ -16,16 +16,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         SceneManager sceneManager = SceneManager.getInstance();
-        sceneManager.init(stage);
+        
         
 
-
+        sceneManager.setScene(SceneId.VISTABIENVENIDA,"VistaBienvenida");
         sceneManager.setScene(SceneId.VISTA1,"Vista1");
         sceneManager.setScene(SceneId.VISTA2,"Vista2");
 
-
-        // stage.setScene(sceneManager.getScene(SceneId.VISTA1));
-        stage.setScene(sceneManager.getScene(SceneId.VISTA1));
+        sceneManager.init(stage);
+        sceneManager.loadScene(SceneId.VISTABIENVENIDA);
         stage.setTitle("Juego_Mazmorras");
         stage.show();
 
