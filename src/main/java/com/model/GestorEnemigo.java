@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class GestorEnemigo {
     private List<Enemigo> enemigos;
+    
 
     public GestorEnemigo() {
         enemigos = new ArrayList<>();
