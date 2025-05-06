@@ -27,47 +27,46 @@ import javafx.scene.text.Font;
 
 public class Vista2Controller implements Observer {
     // Recibir el objeto Protagonista
-    private Protagonista protagonista; // Personaje principal del juego
 
     private Image protagonistaArriba;
     private Image protagonistaAbajo;
     private Image protagonistaIzquierda;
     private Image protagonistaDerecha;
-    private Image imgEnemigo; // Imagen para los enemigos
+
+    private Image enemigoArriba;
+    private Image enemigoAbajo;
+    private Image enemigoIzquierda;
+    private Image enemigoDerecha;
+
     private Image imgSuelo;// Imagen para representar el suelo
     private Image imgPared;// Imagen para representar la pared
 
     @FXML
-    private HBox root; // Contenedor principal de la vista
+    private HBox root;// Contenedor principal de la vista HBox para que el contenedor contenga
+                      // informacion vertical
 
-    private GridPane mainGridPane; // La cuadricula donde se dibuja el mapa
+    private GridPane mainGridPane;// La cuadricula donde se dibuja el mapa
 
-    private static final int ANCHO_CELDA = 50; // Tamaño de cada celda del mapa
+    private static final int ANCHO_CELDA = 60; // Tamaño de ancho de la celda del mapa
 
-    private static final int ALTO_CELDA = 50;
+    private static final int ALTO_CELDA = 60; // Tamaño de alto de la celda
 
     private ImageView protagonistaImageView; // Imagen del protagonista
 
-    
+    private ImageView enemigoImageView; // Imagen del enemigo
 
     /**
-     * Este método se llama desde la vista anterior para recibir el protagonista
-     * y luego llama a reproduce() para mostrarlo en el mapa.
+     * El método setProtagonista tiene como objetivo recibir un objeto Protagonista
+     * desde otra clase
+     * (probablemente desde Vista1Controller o el SceneManager) y
+     * realizar dos acciones principales:
      * 
      * @param protagonista
      */
     public void setProtagonista(Protagonista protagonista) {
         Proveedor.getInstance().setProtagonista(protagonista);
         reproduce();
-       
     }
-
-
-
-
-
-
-
 
     @FXML
     public void initialize() {
@@ -79,7 +78,11 @@ public class Vista2Controller implements Observer {
         protagonistaIzquierda = new Image(getClass().getResourceAsStream("/imagen/protagonista_izquierda.png"));
         protagonistaDerecha = new Image(getClass().getResourceAsStream("/imagen/protagonista_derecha.png"));
 
-        imgEnemigo = new Image(getClass().getResourceAsStream("/imagen/protagonista_arriba.png"));
+        enemigoArriba = new Image(getClass().getResourceAsStream("/imagen/zombito_arriba.png"));
+        enemigoAbajo = new Image(getClass().getResourceAsStream("/imagen/zombito_abajo.png"));
+        enemigoIzquierda = new Image(getClass().getResourceAsStream("/imagen/zombito_izquierda.png"));
+        enemigoDerecha = new Image(getClass().getResourceAsStream("/imagen/zombito_derecha.png"));
+
         imgSuelo = new Image(getClass().getResourceAsStream("/imagen/suelo.jpg"));
         imgPared = new Image(getClass().getResourceAsStream("/imagen/pared.jpg"));
 
@@ -93,7 +96,10 @@ public class Vista2Controller implements Observer {
         protagonistaImageView.setFitWidth(ANCHO_CELDA);
         protagonistaImageView.setFitHeight(ALTO_CELDA);
 
-        
+        enemigoImageView = new ImageView(enemigoIzquierda);
+        enemigoImageView.setFitWidth(ANCHO_CELDA);
+        enemigoImageView.setFitHeight(ALTO_CELDA);
+
     }
 
     // MENSAJE SI NO SE CARGA LAS IMAGENES
@@ -108,15 +114,15 @@ public class Vista2Controller implements Observer {
         if (imgPared.isError()) {
             System.err.println("Error al cargar la imagen de la pared.");
         }
-        if (imgEnemigo.isError()) {
-            System.err.println("Error al cargar la imagen del enemigo.");
+        if (enemigoArriba.isError() || enemigoAbajo.isError() ||
+                enemigoDerecha.isError() || enemigoIzquierda.isError()) {
+            System.err.println("Error al cargar la imagen del protagonista.");
         }
     }
 
     private void manejarMovimiento(KeyEvent event) {
 
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-
         // Detecta la tecla pulsada y calcula la nueva posición del protagonista.
         // Llama a esPosicionValida para ver si puede moverse ahí.
         // Si es válido, actualiza la posición y redibuja el mapa.
@@ -173,13 +179,9 @@ public class Vista2Controller implements Observer {
         }
     }
 
-
-
-
-
     private void reproduce() {
-
-        root.getChildren().clear(); //Se coloca de primero para que limpie el contenedor principal antes de cargar los datos
+        root.getChildren().clear(); // Se coloca de primero para que limpie el contenedor principal antes de cargar
+                                    // los datos
 
         // Reconstruye el mapa cada vez que el protagonista se mueve.
         // Dibuja la imagen del protagonista en su posición actual.
@@ -188,8 +190,6 @@ public class Vista2Controller implements Observer {
         // foco para que puedas seguir moviendo al protagonista.
 
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-
-        
 
         try {
 
@@ -204,11 +204,9 @@ public class Vista2Controller implements Observer {
 
             mainGridPane = new GridPane();
             mainGridPane.setMaxSize(GridPane.USE_PREF_SIZE, GridPane.USE_PREF_SIZE);
-            
 
             root.setAlignment(javafx.geometry.Pos.TOP_LEFT);
             // HBox.setMargin(mainGridPane, new Insets(20, 0, 20, 0));
-
 
             double porcentaje = 100.0 / columnas;
 
@@ -242,7 +240,6 @@ public class Vista2Controller implements Observer {
                     celdaImageView.setFitHeight(ALTO_CELDA);
                     mainGridPane.add(celdaImageView, c, f);
 
-                    
                 }
             }
 
@@ -252,8 +249,7 @@ public class Vista2Controller implements Observer {
             int columnaProtagonista = protagonista.getColumna();
             protagonistaImageView.setFitWidth(ANCHO_CELDA);
             protagonistaImageView.setFitHeight(ALTO_CELDA);
-            mainGridPane.add(protagonistaImageView, columnaProtagonista, filaProtagonista); 
-
+            mainGridPane.add(protagonistaImageView, columnaProtagonista, filaProtagonista);
 
             // Dibujamos los enemigos con sus imágenes
             for (Enemigo enemigo : gestor.getEnemigos()) {
@@ -261,38 +257,35 @@ public class Vista2Controller implements Observer {
                 int c = enemigo.getColumna();
 
                 // Crearemos un ImageView para el enemigo
-                ImageView enemigoImageVer = new ImageView(imgEnemigo);
+                ImageView enemigoImageVer = new ImageView(enemigoAbajo);
                 enemigoImageVer.setFitWidth(ANCHO_CELDA);
-                enemigoImageVer.setFitWidth(ALTO_CELDA);
+                enemigoImageVer.setFitHeight(ALTO_CELDA);
 
                 // Agregaremos la ImageView del enemigo al GridPane
                 mainGridPane.add(enemigoImageVer, c, f);
             }
 
-            
-            //Se crea de forma dinamica un VBOX para que contenga los datos del jugador o protagonista
-
-            VBox datosJugador = new VBox(10);//Espacio vertical entre los label
+            VBox datosJugador = new VBox(10);// Espacio vertical entre los label
             datosJugador.setPadding(new Insets(10));
             if (protagonista != null) {
-                Label lblNombre = new Label ("Nombre del protagonista " + protagonista.getNombre());
-                Label lblVida = new Label ("Puntos de vida: " + protagonista.getPuntosVida());
+                Label lblNombre = new Label("Nombre del protagonista " + protagonista.getNombre());
+                Label lblVida = new Label("Puntos de vida: " + protagonista.getPuntosVida());
                 Label lblDefensa = new Label("Defensa: " + protagonista.getDefensa());
                 Label lblFuerza = new Label("Fuerza: " + protagonista.getFuerza());
-                Label lblPosicion = new Label("Protagonista en fila: " + protagonista.getFila() + ", columna: " + protagonista.getColumna());
-    
+                Label lblPosicion = new Label(
+                        "Protagonista en fila: " + protagonista.getFila() + ", columna: " + protagonista.getColumna());
+
                 Font fuente = Font.font("Arial", 20);
                 lblNombre.setFont(fuente);
                 lblVida.setFont(fuente);
                 lblDefensa.setFont(fuente);
                 lblFuerza.setFont(fuente);
                 lblPosicion.setFont(fuente);
-    
+
                 datosJugador.getChildren().addAll(lblNombre, lblVida, lblDefensa, lblFuerza, lblPosicion);
             }
 
-            //Se agrega al nodo raiz el gridPane y los datos del jugdor
-
+            // Se agrega al nodo raiz el gridPane y los datos del jugdor
             root.getChildren().addAll(mainGridPane, datosJugador);
 
             // Aquí es donde se asegura que el GridPane escuche el teclado
@@ -303,9 +296,6 @@ public class Vista2Controller implements Observer {
             e.printStackTrace();
         }
     }
-
-
-
 
     @Override
     public void onChange() {

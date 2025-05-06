@@ -6,8 +6,9 @@
     
     -fx-font-weight: bold;  /* Negrita para resaltar */
     -fx-font-size: 16px;  /* Tamaño grande, pero no excesivo */
-    -fx-background-color: #ffffff;
+    /* -fx-background-color: #ffffff; */
     -fx-background-radius: 3;
+    -fx-text-fill: #e0e0e0;
    
 }
 

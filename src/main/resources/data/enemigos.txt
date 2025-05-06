@@ -1,4 +1,6 @@
 tipo,x,y,vida,fuerza,defensa,velocidad,percepcion
-Goblin,3,2,10,3,1,5,4
-Orco,6,4,20,6,3,3,3
-Esqueleto,2,6,15,4,2,4,5
+Orco,5,10,100,20,15,5,3
+Troll,8,9,150,25,20,4,2
+Goblin,3,7,50,10,5,6,4
+Esqueleto,6,2,80,15,10,3,5
+Zombi,4,11,300,50,40,2,8
